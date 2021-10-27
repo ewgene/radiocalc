@@ -19,12 +19,11 @@ export default {
         3: "Категория опасности 3: Опасно для человека",
         4: "Категория опасности 4: Опасность для человека маловероятна"
       },
-      message: null,
       danger: null
     }
   },
   computed: {
-    calcAcrivity: function () {
+    calcActivity: function () {
       for(let i=0; i<this.rnCalc.length; i++) {     
         this.rnAct += this.rnCalc[i].AM/this.rnCalc[i].D_val
       }
@@ -51,7 +50,8 @@ export default {
     },
     displayResult() {
       this.rnValue = null
-      this.message = this.messages[this.danger-1]
+      console.log(this.rnValue)
+      alert(this.rnAct)
     }
   }
 }
@@ -74,12 +74,9 @@ export default {
             <p> <span>{{item.Name_RN_Lat}}</span> <span>{{item.D_val}}</span></p>
           </div>
           <button class="submit"
-            @click="calcActivity">
+            @click="displayResult">
             Рассчитать категорию ЗРИ
           </button>
-          <div class="result">
-
-          </div>
         </div>
     </div>
   </div>
