@@ -8,9 +8,17 @@ export default {
   },
   data: () => {
     return {
-      radioNucList: list
+      radioNucList: [],
+      list: list
+    }
+  },
+  mounted: function () {
+    for(let i = 0; i < this.list.length; i++) {
+      if(this.list[i].D_val)
+        this.radioNucList.push(this.list[i])
     }
   }
+
 }
 </script>
 

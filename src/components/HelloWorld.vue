@@ -47,8 +47,9 @@ export default {
     }
   },
   methods: {
-    addRn() {
-      consose.log(this.rnCalc)
+    addRn(item) {
+      let rn = JSON.parse(JSON.stringify(item))
+      this.rnCalc.push(rn)
     },
     findRn() {
       console.log(this.rnValue)
@@ -81,28 +82,36 @@ export default {
 
 <template>
   <div id="Calc">
-    <h1>Расчёт категории ЗРИ</h1>
-    <div class="addRn">
-      <i class="fa fa-plus"
-        @click="addRn()" />
+    <div class="left">
+      <div class="list">
+        <p class="nucList"
+          v-for="item in list" 
+            :key="item.id"
+            @click="addRn(item)">
+            {{ item.Name_RN_Lat }}
+        </p>
+      </div>
     </div>
-    <div class="rnList">
-      <input class="element"
-        v-model="rnValue"
-        @change="findRn()" />
-        <div v-if="this.rnCalc.length">
-          <div class="rn" v-for="item in rnCalc" :key="item.id">
-            <p> <span>{{item.Name_RN_Lat}}</span> <span>{{item.D_val}}</span></p>
+    <div class="right">
+      <h1>Расчёт категории ЗРИ</h1>
+      <div class="rnList">
+        <input class="element"
+          v-model="rnValue"
+          @change="findRn()" />
+          <div v-if="this.rnCalc.length">
+            <div class="rn" v-for="item in rnCalc" :key="item.id">
+              <p> <span>{{item.Name_RN_Lat}}</span> <span>{{item.D_val}}</span></p>
+            </div>
+            <div class="status">
+              <p class="message"
+                :style="{color: colors[danger]}">{{this.message}}</p>
+            </div>
+            <button class="submit"
+              @click="displayResult">
+              Рассчитать категорию ЗРИ
+            </button>
           </div>
-          <div class="status">
-            <p class="message"
-              :style="{color: colors[danger]}">{{this.message}}</p>
-          </div>
-          <button class="submit"
-            @click="displayResult">
-            Рассчитать категорию ЗРИ
-          </button>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -112,8 +121,22 @@ a {
   color: #42b983;
 }
 #Calc{
-  width: 50%;
+  width: 100%;
   margin: 0 auto;
+}
+.left {
+  width: 25%;
+  height: 100vh;
+  float: left;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+p {
+  cursor: pointer;
+}
+.right {
+  widows: 75%;
+  float: right;
 }
 .addRn {
   cursor: pointer;
@@ -132,4 +155,5 @@ span {
   width: 50%;
   margin: 0 auto;
 }
+
 </style>
