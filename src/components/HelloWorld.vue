@@ -135,7 +135,7 @@ p {
   cursor: pointer;
 }
 .right {
-  widows: 75%;
+  width: 75%;
   float: right;
 }
 .addRn {
