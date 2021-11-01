@@ -50,25 +50,28 @@ export default {
     addRn(item) {
       let rn = JSON.parse(JSON.stringify(item))
       this.rnCalc.push(rn)
+      this.rnValue = null
+      let leftMenu = document.getElementsByClassName("nucList")
+      for(let i=0; i<leftMenu.length; i++) {
+        leftMenu[i].classList.replace('off', 'on')
+      }
     },
     findRn() {
-      console.log(this.rnValue)
-      for(let i = 0; i<this.list.length; i++) {
-        if(this.rnValue == this.list[i].Kod_RN
-          || this.rnValue == this.list[i].Name_RN_Lat)
-          { 
-            this.rnCalc.push(JSON.parse(JSON.stringify(this.list[i])))
-            console.log(JSON.parse(JSON.stringify(this.list[i])))
-            this.rnValue = null
-            return
-          }
-/*        else {
-          this.message = "Нет совпадений"
-          this.rnValue = null
-          return
-        }*/
+      let leftMenu = document.getElementsByClassName("nucList")
+      console.log(leftMenu.length)
+      for(let i=0; i<leftMenu.length; i++) {
+        leftMenu[i].classList.replace('on', 'off')
       }
-      return this.rnCalc
+      for(let i = 0; i<this.list.length; i++) {
+        if(this.list[i].Name_RN.indexOf(this.rnValue) != -1
+          || this.list[i].Name_RN_Lat.indexOf(this.rnValue) != -1
+          || this.list[i].Kod_RN.indexOf(this.rnValue) != -1)
+          {
+            let elem = document.getElementById(this.list[i].Kod_RN)
+            elem.classList.replace('off', 'on')
+            console.log(elem.classList)
+          }
+      }
     },
     displayResult() {
       console.log(this.calcActivity)
@@ -84,9 +87,11 @@ export default {
   <div id="Calc">
     <div class="left">
       <div class="list">
-        <p class="nucList"
+        <p class="nucList on"
           v-for="item in list" 
-            :key="item.id"
+            :ref="item.Kod_RN"
+            :id="item.Kod_RN"
+            :key="item.Kod_RN"
             @click="addRn(item)">
             {{ item.Name_RN_Lat }}
         </p>
@@ -97,20 +102,22 @@ export default {
       <div class="rnList">
         <input class="element"
           v-model="rnValue"
-          @change="findRn()" />
-          <div v-if="this.rnCalc.length">
-            <div class="rn" v-for="item in rnCalc" :key="item.id">
-              <p> <span>{{item.Name_RN_Lat}}</span> <span>{{item.D_val}}</span></p>
-            </div>
-            <div class="status">
-              <p class="message"
-                :style="{color: colors[danger]}">{{this.message}}</p>
-            </div>
-            <button class="submit"
-              @click="displayResult">
-              Рассчитать категорию ЗРИ
-            </button>
+          @keyup="findRn()" />
+        <div v-if="this.rnCalc.length">
+          <div class="rn" v-for="item in rnCalc" :key="item.id">
+            <p> 
+              <span>{{item.Name_RN_Lat}}</span> 
+              <span>{{item.D_val}}</span></p>
           </div>
+          <div class="status">
+            <p class="message"
+              :style="{color: colors[danger]}">{{this.message}}</p>
+          </div>
+          <button class="submit"
+            @click="displayResult">
+            Рассчитать категорию ЗРИ
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -131,8 +138,9 @@ a {
   overflow-y: scroll;
   scrollbar-width: thin;
 }
-p {
+.nucList {
   cursor: pointer;
+  display: block;
 }
 .right {
   width: 75%;
@@ -149,11 +157,16 @@ p {
 span {
   width: 45%;
   padding: 5px 0;
-  display: inline-block
+  display: inline-block;
 }
 .status {
   width: 50%;
   margin: 0 auto;
 }
-
+.off {
+  display: none;
+}
+.on {
+  display: block;
+}
 </style>
