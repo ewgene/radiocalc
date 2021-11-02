@@ -34,7 +34,7 @@ export default {
   computed: {
     calcActivity: function () {
       for(let i=0; i<this.rnCalc.length; i++) {
-        this.rnAct += this.rnCalc[i].AM/this.rnCalc[i].D_val
+        this.rnAct += this.rnCalc[i].activity/this.rnCalc[i].D_val
       }
       if(this.rnAct < 0.01) this.danger = 0
       else if(this.rnAct >= 0.01 && this.rnAct < 1) this.danger = 1
@@ -105,9 +105,11 @@ export default {
           @keyup="findRn()" />
         <div v-if="this.rnCalc.length">
           <div class="rn" v-for="item in rnCalc" :key="item.id">
-            <p> 
+            <p class="nuc"> 
               <span>{{item.Name_RN_Lat}}</span> 
-              <span>{{item.D_val}}</span></p>
+            </p>
+            <input class="activity"
+              v-model="item.activity" />
           </div>
           <div class="status">
             <p class="message"
@@ -131,6 +133,7 @@ a {
   width: 100%;
   margin: 0 auto;
 }
+
 .left {
   width: 25%;
   height: 100vh;
@@ -142,6 +145,12 @@ a {
   cursor: pointer;
   display: block;
 }
+.off {
+  display: none;
+}
+.on {
+  display: block;
+}
 .right {
   width: 75%;
   float: right;
@@ -151,22 +160,19 @@ a {
 }
 .rn {
   width: 50%;
-  margin: 0 auto;
+  margin: 10px auto;
   background-color: #ccc;
 }
-span {
+.nuc {
   width: 45%;
-  padding: 5px 0;
   display: inline-block;
+}
+.activity {
+  display:inline-block;
+  width: 40%;
 }
 .status {
   width: 50%;
   margin: 0 auto;
-}
-.off {
-  display: none;
-}
-.on {
-  display: block;
 }
 </style>
