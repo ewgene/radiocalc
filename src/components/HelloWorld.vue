@@ -33,6 +33,7 @@ export default {
   },
   computed: {
     calcActivity: function () {
+      this.rnAct = null
       for(let i=0; i<this.rnCalc.length; i++) {
         this.rnAct += this.rnCalc[i].activity/this.rnCalc[i].D_val
       }
@@ -44,7 +45,17 @@ export default {
       this.message = this.messages[this.danger]
       console.log(this.rnAct)
       return this.rnAct
-    }
+    },
+    sortRn() {
+      function compare(a, b) {
+        if (a.Name_RN < b.Name_RN)
+          return -1;
+        if (a.Name_RN > b.Name_RN)
+          return 1;
+        return 0;
+      }
+      return this.list.sort(compare);
+    },
   },
   methods: {
     addRn(item) {
@@ -93,13 +104,14 @@ export default {
             :id="item.Kod_RN"
             :key="item.Kod_RN"
             @click="addRn(item)">
-            {{ item.Name_RN_Lat }}
+            <span>{{ item.Name_RN }}</span> <span>{{ item.Name_RN_Lat }}</span>
         </p>
       </div>
     </div>
     <div class="right">
       <h1>Расчёт категории ЗРИ</h1>
       <div class="rnList">
+        <i class="fa fa-refresh"></i>
         <input class="element"
           v-model="rnValue"
           @keyup="findRn()" />
@@ -110,6 +122,7 @@ export default {
             </p>
             <input class="activity"
               v-model="item.activity" />
+            <i class="fa fa-trash"></i>
           </div>
           <div class="status">
             <p class="message"
@@ -135,15 +148,22 @@ a {
 }
 
 .left {
+  position: absolute;
   width: 25%;
   height: 100vh;
-  float: left;
+  padding: 0 10px;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
 .nucList {
   cursor: pointer;
-  display: block;
+  text-align: justify;
+  margin: 0;
+}
+.nucList:after {
+  content: "";
+  display: inline-block;
+  width: 100%;
 }
 .off {
   display: none;
@@ -162,6 +182,17 @@ a {
   width: 50%;
   margin: 10px auto;
   background-color: #ccc;
+}
+.fa {
+  width: 21px;
+  height: 21px;
+  cursor: pointer;
+}
+.fa-trash {
+  color: #f00;
+}
+.fa-refresh {
+  color: #3c3;
 }
 .nuc {
   width: 45%;

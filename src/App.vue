@@ -1,6 +1,6 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import list from './rn.json'
+import axios from 'axios'
 
 export default {
   components: {
@@ -9,16 +9,23 @@ export default {
   data: () => {
     return {
       radioNucList: [],
-      list: list
+      list: []
     }
   },
-  mounted: function () {
-    for(let i = 0; i < this.list.length; i++) {
-      if(this.list[i].D_val)
-        this.radioNucList.push(this.list[i])
+  created: function () {
+    axios.get("./rn.json")
+      .then(response => (this.list = response.data))
+  },
+  watch: {
+    list: {
+      handler () {
+        for(let i = 0; i < this.list.length; i++) {
+          if(this.list[i].D_val)
+            this.radioNucList.push(this.list[i])
+        }
+      }    
     }
   }
-
 }
 </script>
 
