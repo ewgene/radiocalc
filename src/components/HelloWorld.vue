@@ -42,6 +42,7 @@ export default {
         return 0
       }
       this.listSorted = this.list.sort(compare)
+      console.log(this.listSorted)
       return this.listSorted
     },
     calcActivity: function () {
