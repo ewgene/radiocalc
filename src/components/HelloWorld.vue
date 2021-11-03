@@ -9,6 +9,7 @@ export default {
   data () {
     return {
       list: this.radioNucList,
+      listSorted: [],
       rnCount: 0,
       rnCalc: [],
       rnValue: null,
@@ -32,6 +33,17 @@ export default {
     }
   },
   computed: {
+    sortRn() {
+      function compare(a, b) {
+        if (a.Name_RN < b.Name_RN)
+          return -1
+        if (a.Name_RN > b.Name_RN)
+          return 1
+        return 0
+      }
+      this.listSorted = this.list.sort(compare)
+      return this.listSorted
+    },
     calcActivity: function () {
       this.rnAct = null
       for(let i=0; i<this.rnCalc.length; i++) {
@@ -45,16 +57,6 @@ export default {
       this.message = this.messages[this.danger]
       console.log(this.rnAct)
       return this.rnAct
-    },
-    sortRn() {
-      function compare(a, b) {
-        if (a.Name_RN < b.Name_RN)
-          return -1;
-        if (a.Name_RN > b.Name_RN)
-          return 1;
-        return 0;
-      }
-      return this.list.sort(compare);
     },
   },
   methods: {
@@ -99,7 +101,7 @@ export default {
     <div class="left">
       <div class="list">
         <p class="nucList on"
-          v-for="item in list" 
+          v-for="item in listSorted" 
             :ref="item.Kod_RN"
             :id="item.Kod_RN"
             :key="item.Kod_RN"
@@ -151,7 +153,7 @@ a {
   position: absolute;
   width: 25%;
   height: 100vh;
-  padding: 0 10px;
+  padding: 10px;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
