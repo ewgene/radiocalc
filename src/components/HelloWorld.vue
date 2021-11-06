@@ -9,7 +9,7 @@ export default {
   data () {
     return {
       list: this.radioNucList,
-      listSorted: [],
+     listSorted: [],
       rnCount: 0,
       rnCalc: [],
       rnValue: null,
@@ -41,9 +41,9 @@ export default {
           return 1
         return 0
       }
-      this.listSorted = this.list.sort(compare)
-      console.log(this.listSorted)
-      return this.listSorted
+      this.listSorted = [...this.list]
+      console.log(this.listSorted.sort(compare))
+      return this.listSorted.sort(compare)
     },
     calcActivity: function () {
       this.rnAct = null
