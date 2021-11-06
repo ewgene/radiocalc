@@ -9,7 +9,7 @@ export default {
   data () {
     return {
       list: this.radioNucList,
-     listSorted: [],
+      listSorted: [],
       rnCount: 0,
       rnCalc: [],
       rnValue: null,
@@ -29,6 +29,13 @@ export default {
         2: "#FFFF00",
         3: "#FF9900",
         4: "#FF0000"
+      }
+    }
+  },
+  watch: {
+    listSorted: {
+      handler () {
+        console.log(this.listSorted)
       }
     }
   },
@@ -102,7 +109,7 @@ export default {
     <div class="left">
       <div class="list">
         <p class="nucList on"
-          v-for="item in listSorted" 
+          v-for="item in sortRn" 
             :ref="item.Kod_RN"
             :id="item.Kod_RN"
             :key="item.Kod_RN"
