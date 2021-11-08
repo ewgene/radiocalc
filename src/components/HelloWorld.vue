@@ -32,13 +32,13 @@ export default {
       }
     }
   },
-  watch: {
+/*  watch: {
     listSorted: {
       handler () {
         console.log(this.listSorted)
       }
     }
-  },
+  },*/
   computed: {
     sortRn() {
       function compare(a, b) {
@@ -49,7 +49,6 @@ export default {
         return 0
       }
       this.listSorted = [...this.list]
-      console.log(this.listSorted.sort(compare))
       return this.listSorted.sort(compare)
     },
     calcActivity: function () {
@@ -94,10 +93,21 @@ export default {
           }
       }
     },
+    removeRn(value) {
+      for(let i=0; i<this.rnCalc.length; i++) {
+        if(this.rnCalc[i].Kod_RN == value) {
+          this.rnCalc.splice(i, 1)
+        }
+      }
+    },
     displayResult() {
       console.log(this.calcActivity)
       navigator.clipboard.writeText(this.message)
-      alert(this.calcActivity)
+    },
+    resetCalc() {      
+      this.rnValue = null
+      this.rnCalc = []
+      this.rnAct = null
     }
   }
 }
@@ -107,6 +117,11 @@ export default {
 <template>
   <div id="Calc">
     <div class="left">
+      <i class="fa fa-refresh"
+        @click="resetCalc"></i>
+      <input class="element"
+        v-model="rnValue"
+        @keyup="findRn()" />
       <div class="list">
         <p class="nucList on"
           v-for="item in sortRn" 
@@ -121,10 +136,6 @@ export default {
     <div class="right">
       <h1>Расчёт категории ЗРИ</h1>
       <div class="rnList">
-        <i class="fa fa-refresh"></i>
-        <input class="element"
-          v-model="rnValue"
-          @keyup="findRn()" />
         <div v-if="this.rnCalc.length">
           <div class="rn" v-for="item in rnCalc" :key="item.id">
             <p class="nuc"> 
@@ -132,7 +143,8 @@ export default {
             </p>
             <input class="activity"
               v-model="item.activity" />
-            <i class="fa fa-trash"></i>
+            <i class="fa fa-trash"
+              @click="removeRn(item.Kod_RN)"></i>
           </div>
           <div class="status">
             <p class="message"
@@ -164,6 +176,9 @@ a {
   padding: 10px;
   overflow-y: scroll;
   scrollbar-width: thin;
+}
+.element {
+  margin-bottom: 30px;
 }
 .nucList {
   cursor: pointer;

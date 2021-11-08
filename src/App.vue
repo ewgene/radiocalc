@@ -23,7 +23,6 @@ export default {
           if(this.list[i].D_val)
             this.radioNucList.push(this.list[i])
         }
-        console.log(this.radioNucList)
       }
     }
   }
