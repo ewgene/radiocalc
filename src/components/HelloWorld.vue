@@ -13,7 +13,7 @@ export default {
       rnCount: 0,
       rnCalc: [],
       rnValue: null,
-      rnAct: null,
+      rnAct: 0,
       messages: {
         0: "Категория опасности 5: Опасность для человека очень маловероятна",
         1: "Категория опасности 4: Опасность для человека маловероятна",
@@ -52,9 +52,14 @@ export default {
       return this.listSorted.sort(compare)
     },
     calcActivity: function () {
-      this.rnAct = null
+      this.rnAct = 0
       for(let i=0; i<this.rnCalc.length; i++) {
-        this.rnAct += this.rnCalc[i].activity/this.rnCalc[i].D_val
+        let rnMZ = this.rnCalc[i].activity/(this.rnCalc[i].D_val/1e+12)
+        console.log(rnMZ)
+        if(this.rnCalc[i].activity <= this.rnCalc[i].MZA) {
+          continue
+        }
+        this.rnAct += rnMZ
       }
       if(this.rnAct < 0.01) this.danger = 0
       else if(this.rnAct >= 0.01 && this.rnAct < 1) this.danger = 1
@@ -117,11 +122,13 @@ export default {
 <template>
   <div id="Calc">
     <div class="left">
-      <i class="fa fa-refresh"
+      <div class="head">
+        <i class="fa fa-refresh"
         @click="resetCalc"></i>
-      <input class="element"
-        v-model="rnValue"
-        @keyup="findRn()" />
+        <input class="element"
+          v-model="rnValue"
+          @keyup="findRn()" />
+      </div>
       <div class="list">
         <p class="nucList on"
           v-for="item in sortRn" 
@@ -176,6 +183,14 @@ a {
   padding: 10px;
   overflow-y: scroll;
   scrollbar-width: thin;
+}
+.head {
+  width: 24%;
+  position: fixed;
+  background-color: #fff;
+}
+.list {
+  padding-top: 50px;
 }
 .element {
   margin-bottom: 30px;
