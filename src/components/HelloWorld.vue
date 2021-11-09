@@ -180,7 +180,7 @@ a {
   position: absolute;
   width: 25%;
   height: 100vh;
-  padding: 10px;
+  padding: 0 10px;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
