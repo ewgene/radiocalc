@@ -54,8 +54,8 @@ export default {
     calcActivity: function () {
       this.rnAct = 0
       for(let i=0; i<this.rnCalc.length; i++) {
-        let rnMZ = this.rnCalc[i].activity/(this.rnCalc[i].D_val/1e+12)
-        console.log(rnMZ)
+        let rnMZ = this.rnCalc[i].activity/(this.rnCalc[i].D_val/(1e+12))
+        console.log(this.rnCalc[i].D_val/(1e+12))
         if(this.rnCalc[i].activity <= this.rnCalc[i].MZA) {
           continue
         }
@@ -80,6 +80,9 @@ export default {
       for(let i=0; i<leftMenu.length; i++) {
         leftMenu[i].classList.replace('off', 'on')
       }
+      for(let j=0; j<this.rnCalc.length; j++) {
+        document.getElementById(this.rnCalc[j].Kod_RN).classList.replace('on', 'off')
+      }
     },
     findRn() {
       let leftMenu = document.getElementsByClassName("nucList")
@@ -94,7 +97,6 @@ export default {
           {
             let elem = document.getElementById(this.list[i].Kod_RN)
             elem.classList.replace('off', 'on')
-            console.log(elem.classList)
           }
       }
     },
@@ -102,6 +104,7 @@ export default {
       for(let i=0; i<this.rnCalc.length; i++) {
         if(this.rnCalc[i].Kod_RN == value) {
           this.rnCalc.splice(i, 1)
+          document.getElementById(this.rnCalc[i].Kod_RN).classList.replace('on', 'off')
         }
       }
     },
